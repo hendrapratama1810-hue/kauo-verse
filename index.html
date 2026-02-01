@@ -9,56 +9,208 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#b30000">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
-html,body{width:100%;height:100%;overflow:hidden;font-family:system-ui}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+html,body{
+  width:100%;
+  height:100%;
+  font-family:system-ui,-apple-system;
+  overflow:hidden;
+}
 
-/* BG */
-.bg-video{position:fixed;inset:0;z-index:-2}
-.bg-video video{width:100%;height:100%;object-fit:cover}
+/* ===== BACKGROUND VIDEO ===== */
+.bg-video{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+}
+.bg-video video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
 
-/* LOADING */
-.loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-background:rgba(255,0,0,.15);backdrop-filter:blur(30px);z-index:99}
-.loading-box{padding:30px 40px;border-radius:26px;background:rgba(255,80,80,.25);
-box-shadow:0 0 60px red,inset 0 0 30px rgba(255,140,140,.4);text-align:center}
-.loading-box h2{color:white;font-family:Orbitron;letter-spacing:2px}
-.loader{width:42px;height:42px;border-radius:50%;border:4px solid rgba(255,255,255,.25);
-border-top:4px solid white;animation:spin 1s linear infinite;margin:14px auto}
+/* ===== LOADING OVERLAY ===== */
+.loading{
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(255,0,0,0.15);
+  backdrop-filter:blur(35px) saturate(180%);
+  z-index:999;
+}
+.loading-box{
+  padding:30px 40px;
+  border-radius:28px;
+  background:rgba(255,80,80,0.25);
+  box-shadow:
+    0 0 60px rgba(255,60,60,1),
+    inset 0 0 30px rgba(255,140,140,.4);
+  text-align:center;
+}
+.loading-box h2{
+  font-family:'Orbitron',system-ui;
+  color:white;
+  letter-spacing:2px;
+  margin-bottom:14px;
+  text-shadow:0 0 20px rgba(255,80,80,1);
+}
+.loader{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:4px solid rgba(255,255,255,.25);
+  border-top:4px solid white;
+  animation:spin 1s linear infinite;
+  margin:0 auto;
+}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* CARD */
-.center{position:fixed;inset:0;display:flex;justify-content:center;align-items:center}
-.glass{width:min(92%,380px);padding:26px;border-radius:30px;
-background:rgba(255,80,80,.14);backdrop-filter:blur(28px);
-box-shadow:0 0 60px rgba(255,60,60,.85),inset 0 0 30px rgba(255,120,120,.35);
-text-align:center}
-.media{width:72%;aspect-ratio:1/1;margin:0 auto 14px;border-radius:18px;overflow:hidden}
-.media video{width:100%;height:100%;object-fit:cover;pointer-events:none}
+/* ===== CENTER ===== */
+.center{
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-h1{font-family:Orbitron;color:white;letter-spacing:3px;margin-bottom:18px;
-text-shadow:0 0 20px rgba(255,80,80,.95)}
+/* ===== GLASS CARD ===== */
+.glass{
+  width:min(92%,380px);
+  padding:26px;
+  border-radius:30px;
+  background:rgba(255,80,80,0.14);
+  backdrop-filter:blur(28px) saturate(180%);
+  box-shadow:
+    0 0 60px rgba(255,60,60,0.85),
+    inset 0 0 30px rgba(255,120,120,0.35);
+  text-align:center;
+}
 
-input{width:100%;padding:14px;margin:8px 0;border-radius:16px;border:none;
-background:rgba(255,120,120,.18);color:white;box-shadow:0 0 22px rgba(255,60,60,.85)}
+/* ===== VIDEO POPUP ===== */
+.media{
+  width:72%;
+  aspect-ratio:1/1;
+  margin:0 auto 14px;
+  border-radius:18px;
+  overflow:hidden;
+}
+.media video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  pointer-events:none;
+}
+
+/* ===== TITLE ===== */
+h1{
+  font-family:'Orbitron', system-ui;
+  color:white;
+  letter-spacing:3px;
+  margin-bottom:18px;
+  text-shadow:0 0 20px rgba(255,80,80,.95);
+}
+
+/* ===== INPUT ===== */
+input{
+  width:100%;
+  padding:14px;
+  margin:8px 0;
+  border-radius:16px;
+  border:none;
+  outline:none;
+  background:rgba(255,120,120,0.18);
+  color:white;
+  font-size:15px;
+  box-shadow:0 0 22px rgba(255,60,60,0.85);
+}
 input::placeholder{color:#ffe5e5}
 
-.btn-group{display:flex;flex-direction:column;gap:14px;margin-top:10px}
-button,a{padding:14px;border-radius:18px;border:none;cursor:pointer;font-weight:600;text-decoration:none}
-.login{background:linear-gradient(135deg,#ff7a7a,#ff2b2b);box-shadow:0 0 40px red}
-.access{background:linear-gradient(135deg,#ff4d4d,#e60000);color:white;box-shadow:0 0 40px red}
+/* ===== BUTTON GROUP ===== */
+.btn-group{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:10px;
+}
+button,a{
+  width:100%;
+  padding:14px;
+  border-radius:18px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  text-decoration:none;
+  transition:transform .2s;
+}
+button:active,a:active{transform:scale(.95)}
 
-/* STATUS */
-.status{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-background:rgba(0,0,0,.25);backdrop-filter:blur(30px);opacity:0;pointer-events:none}
+.login{
+  background:linear-gradient(135deg,#ff7a7a,#ff2b2b);
+  color:#2a0000;
+  box-shadow:0 0 40px rgba(255,60,60,1);
+}
+.access{
+  background:linear-gradient(135deg,#ff4d4d,#e60000);
+  color:white;
+  box-shadow:0 0 40px rgba(255,40,40,1);
+}
+
+/* ===== STATUS ===== */
+.status{
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,0.25);
+  backdrop-filter:blur(30px);
+  opacity:0;
+  pointer-events:none;
+  transition:.35s ease;
+}
 .status.show{opacity:1;pointer-events:auto}
-.status-box{padding:26px;border-radius:26px;color:white;text-align:center}
-.success{background:rgba(255,120,120,.3);box-shadow:0 0 55px red}
-.error{background:rgba(255,90,90,.3);box-shadow:0 0 55px red}
-.status-box button{margin-top:18px;background:white;color:black}
+.status-box{
+  padding:26px;
+  border-radius:26px;
+  text-align:center;
+  color:white;
+  transform:scale(.6);
+  animation:bounce .65s cubic-bezier(.25,1.4,.4,1);
+}
+@keyframes bounce{
+  0%{transform:scale(.6)}
+  60%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+.success{
+  background:rgba(255,120,120,0.30);
+  box-shadow:0 0 55px rgba(255,80,80,1);
+}
+.error{
+  background:rgba(255,90,90,0.30);
+  box-shadow:0 0 55px rgba(255,40,40,1);
+}
+.status-box button{
+  margin-top:18px;
+  background:white;
+  color:#000;
+}
+
+::selection{background:transparent}
 </style>
 </head>
 
@@ -81,11 +233,11 @@ background:rgba(0,0,0,.25);backdrop-filter:blur(30px);opacity:0;pointer-events:n
       <video src="video.mp4" autoplay loop muted playsinline></video>
     </div>
     <h1>KAUO VERSE</h1>
-    <input id="u" placeholder="Username">
-    <input id="p" type="password" placeholder="Password">
+    <input id="u" placeholder="Username...">
+    <input id="p" type="password" placeholder="Password...">
     <div class="btn-group">
       <button class="login" onclick="login()">Login</button>
-      <a class="access" href="t.me/drazxxz">Access Now »</a>
+      <a class="access" href="t.me/drazxxz" target="_blank">Access Now »</a>
     </div>
   </div>
 </div>
@@ -98,29 +250,38 @@ background:rgba(0,0,0,.25);backdrop-filter:blur(30px);opacity:0;pointer-events:n
 </div>
 
 <script>
-if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js")}
+/* PWA */
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
 
 const USER="DRAXZ";
 const PASS=["j","i","l","a","t","e","m","u","t"].join("");
 
-window.onload=()=>setTimeout(()=>loading.style.display="none",900);
+window.addEventListener("load",()=>{
+  setTimeout(()=>{
+    document.getElementById("loading").style.display="none";
+  },900);
+});
 
 function login(){
   const u=document.getElementById("u").value;
   const p=document.getElementById("p").value;
-  status.classList.add("show");
+  const s=document.getElementById("status");
+  const b=document.getElementById("box");
+  const m=document.getElementById("msg");
+  const btn=document.getElementById("statusBtn");
+
+  s.classList.add("show");
 
   if(u===USER && p===PASS){
-    box.className="status-box success";
-    msg.innerText="Login Berhasil";
-    statusBtn.onclick=()=>{
-      sessionStorage.setItem("allowPage2","true");
-      location.href="page2.html";
-    };
+    b.className="status-box success";
+    m.innerText="Login Berhasil";
+    btn.onclick=()=>location.href="page2.html";
   }else{
-    box.className="status-box error";
-    msg.innerText="Username atau Password Salah";
-    statusBtn.onclick=()=>status.classList.remove("show");
+    b.className="status-box error";
+    m.innerText="Username atau Password Salah";
+    btn.onclick=()=>s.classList.remove("show");
   }
 }
 </script>
