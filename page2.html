@@ -5,40 +5,106 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WELCOME</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box;user-select:none}
-body{background:black;overflow:hidden;color:red;font-family:Orbitron}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  user-select:none;
+  -webkit-user-select:none;
+}
+body{
+  background:black;
+  overflow:hidden;
+  font-family:'Orbitron',system-ui;
+  color:red;
+}
 
-/* BG */
-.bg{position:fixed;inset:0;z-index:-2}
-.bg video{width:100%;height:100%;object-fit:cover;filter:blur(18px) brightness(.3)}
+/* BACKGROUND */
+.bg{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+}
+.bg video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:blur(18px) brightness(.3);
+}
 
-.main{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+/* MAIN */
+.main{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
 
 /* VIDEO */
-.box{width:85%;max-width:720px;aspect-ratio:16/9;border-radius:22px;overflow:hidden;
-box-shadow:0 0 40px red}
-.box video{width:100%;height:100%;object-fit:cover}
+.box{
+  width:85%;
+  max-width:720px;
+  aspect-ratio:16/9;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 0 40px red,0 0 80px rgba(255,0,0,.8);
+}
+.box video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
 
-/* LOADING */
-.load{width:60%;height:6px;background:rgba(255,0,0,.3);margin:20px;border-radius:10px;overflow:hidden}
-.load span{display:block;height:100%;width:0;background:red;animation:bar 45s linear forwards}
+/* LOADING BAR */
+.load{
+  width:60%;
+  height:6px;
+  background:rgba(255,0,0,.3);
+  margin:22px 0;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 0 20px red;
+}
+.load span{
+  display:block;
+  height:100%;
+  width:0%;
+  background:red;
+  animation:bar 45s linear forwards;
+}
 @keyframes bar{to{width:100%}}
 
-h2{text-shadow:0 0 20px red;margin-top:10px}
-.tap{font-size:12px;margin-top:6px;opacity:.8}
-.skip{margin-top:18px;cursor:pointer}
+h2{
+  text-shadow:0 0 18px red,0 0 40px red;
+}
+.skip{
+  margin-top:18px;
+  cursor:pointer;
+  font-size:14px;
+  text-shadow:0 0 12px red;
+}
 </style>
 </head>
 
 <body oncontextmenu="return false">
 
 <script>
-if(sessionStorage.getItem("allowPage2")!=="true"){location.replace("index.html")}
+/* BLOKIR AKSES LANGSUNG */
+if (sessionStorage.getItem("allowPage2") !== "true") {
+  location.replace("index.html");
+}
+
+/* KUNCI BACK */
 history.pushState(null,null,location.href);
 onpopstate=()=>history.go(1);
 </script>
 
+<!-- BACKGROUND VIDEO -->
 <div class="bg">
   <video src="bg.mp4" autoplay muted loop playsinline></video>
 </div>
@@ -47,25 +113,40 @@ onpopstate=()=>history.go(1);
   <div class="box">
     <video id="vid" src="video.mp4" autoplay muted playsinline></video>
   </div>
+
   <div class="load"><span></span></div>
+
   <h2>Welcome Back DRAXZ 😈</h2>
-  <div class="tap" id="tap">Tap 1x for music</div>
-  <div class="skip" onclick="location.href='page3.html'">Skip Loading ></div>
+  <div class="skip" onclick="location.href='page3.html'">Skip Loading &gt;</div>
 </div>
 
-<audio id="music" src="music.mp3"></audio>
+<!-- MUSIC -->
+<audio id="music" src="music.mp3" muted preload="auto"></audio>
 
 <script>
-const v=document.getElementById("vid");
-const m=document.getElementById("music");
-const t=document.getElementById("tap");
+const v = document.getElementById("vid");
+const m = document.getElementById("music");
 
-function playMusic(){
-  m.currentTime=v.currentTime;
-  m.play().then(()=>t.style.display="none").catch(()=>{});
-}
-document.addEventListener("click",playMusic,{once:true});
-v.onended=()=>location.href="page3.html";
+/* AUTOPLAY MUSIC (OPTIMIZED FOR PWA) */
+window.addEventListener("load", () => {
+  // sinkron waktu dengan video
+  m.currentTime = v.currentTime;
+
+  // coba autoplay (PWA)
+  m.play().then(() => {
+    m.muted = false;
+  }).catch(() => {
+    // fallback jika OS masih blok
+    document.addEventListener("click", () => {
+      m.currentTime = v.currentTime;
+      m.muted = false;
+      m.play();
+    }, { once:true });
+  });
+});
+
+/* AUTO PAGE3 */
+v.onended = () => location.href="page3.html";
 </script>
 
 </body>
