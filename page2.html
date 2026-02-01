@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page 2</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Orbitron', sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  height: 100vh;
+  overflow: hidden;
+  background: black;
+  -webkit-touch-callout: none;
+}
+
+/* ===== Loading 0.5s ===== */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: red;
+  font-size: 1rem;
+  text-shadow: 0 0 20px red;
+  z-index: 99;
+}
+
+/* ===== Background Video ===== */
+.bg-video {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(16px) brightness(0.35);
+  z-index: -2;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(120,0,0,0.45);
+  z-index: -1;
+}
+
+/* ===== Container ===== */
+.container {
+  height: 100vh;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: red;
+}
+
+/* ===== Video Box ===== */
+.video-box {
+  width: 85%;
+  max-width: 720px;
+  aspect-ratio: 16 / 9;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow:
+    0 0 30px red,
+    0 0 70px rgba(255,0,0,0.9);
+}
+
+.video-box video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== Loading Bar ===== */
+.loading {
+  margin-top: 24px;
+  width: 65%;
+  max-width: 420px;
+  height: 6px;
+  background: rgba(255,0,0,0.25);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 18px red;
+}
+
+.loading span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: red;
+  box-shadow: 0 0 25px red;
+  animation: load 45s linear forwards;
+}
+
+@keyframes load {
+  to { width: 100%; }
+}
+
+/* ===== Text ===== */
+.welcome {
+  margin-top: 18px;
+  font-size: 1.5rem;
+  text-shadow: 0 0 12px red, 0 0 30px red;
+}
+
+.tap-music {
+  margin-top: 10px;
+  font-size: 0.7rem;
+  opacity: 0.85;
+  text-shadow: 0 0 12px red;
+  cursor: pointer;
+}
+
+.skip {
+  margin-top: 22px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-shadow: 0 0 12px red;
+}
+.skip:hover { color: white; }
+</style>
+</head>
+
+<body oncontextmenu="return false">
+
+<!-- Loading -->
+<div class="loading-screen" id="loading">Loading...</div>
+
+<!-- Background (MUTE) -->
+<video class="bg-video" autoplay muted loop playsinline>
+  <source src="bg1.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+
+<div class="container" id="main">
+
+  <!-- Main Video (AUTOPLAY MUTE) -->
+  <div class="video-box">
+    <video id="mainVideo"
+      autoplay
+      muted
+      playsinline
+      preload="auto"
+      controlsList="nodownload noplaybackrate">
+      <source src="video1.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- Loading bar -->
+  <div class="loading"><span></span></div>
+
+  <div class="welcome">Welcome Back DRAXZ😈</div>
+  <div class="tap-music" id="tapMusic">Tap 1x for music</div>
+  <div class="skip" onclick="goPage3()">Skip Loading &gt;</div>
+
+  <!-- Music -->
+  <audio id="music" preload="auto">
+    <source src="music.mp3" type="audio/mp3">
+  </audio>
+
+</div>
+
+<script>
+const loading = document.getElementById("loading");
+const main = document.getElementById("main");
+const video = document.getElementById("mainVideo");
+const audio = document.getElementById("music");
+const tapText = document.getElementById("tapMusic");
+
+let musicStarted = false;
+
+/* Loading 0.5 detik */
+setTimeout(() => {
+  loading.style.display = "none";
+  main.style.display = "flex";
+}, 500);
+
+/* Tap 1x → musik sinkron dengan video */
+tapText.addEventListener("click", () => {
+  if (!musicStarted) {
+    audio.currentTime = video.currentTime;
+    audio.play();
+    musicStarted = true;
+    tapText.style.display = "none";
+  }
+});
+
+/* Auto ke page3 */
+function goPage3() {
+  window.location.href = "page3.html";
+}
+
+video.onended = () => {
+  goPage3();
+};
+</script>
+
+</body>
+</html>
